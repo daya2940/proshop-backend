@@ -8,11 +8,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon backend/server",
     "client": "yarn start --prefix /frontend",
-    "dev": "concurrently \"npm run server\" \"yarn run client\""
+    "dev": "concurrently \"npm run server\" \"yarn run client\"",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d"
   },
   "author": "saurav",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "concurrently": "^6.3.0",
     "dotenv": "^10.0.0",
