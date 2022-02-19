@@ -6,6 +6,7 @@ import productRoutes from "./routes/productRouter.js";
 import userRoutes from "./routes/userRouter.js";
 import morgan from "morgan";
 import bodyParser from "body-parser";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ app.use(express.json());
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
