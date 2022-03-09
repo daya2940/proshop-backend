@@ -3,15 +3,20 @@ import jwt from "jsonwebtoken";
 import expressAsyncHandler from "express-async-handler";
 
 const protect = expressAsyncHandler(async (req, res, next) => {
+  console.log("Authorization:", req.headers.authorization);
   let token;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      // console.log(req.headers.authorization);
-      token = req.headers.authorization.split(" ")[2];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      token = req.headers.authorization.split(" ")[1];
+      jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+        if (err) {
+          console.log(err);
+        }
+      });
+
       next();
     } catch (err) {}
   }
