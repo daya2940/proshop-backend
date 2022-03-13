@@ -7,6 +7,7 @@ import Order from "../models/orderModal.js";
 // access Private
 
 const addOrderItems = asyncHandler(async (req, res) => {
+  console.log(req.user);
   const {
     orderItems,
     shippingAddress,
@@ -16,7 +17,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-  if (orderItems?.length === 0) {
+  if (orderItems && orderItems?.length === 0) {
     res.status(400);
     throw new Error("No Order Items");
   } else {
@@ -30,9 +31,26 @@ const addOrderItems = asyncHandler(async (req, res) => {
       shippingPrice,
       totalPrice,
     });
-    const createdOrder = await Order.save();
+    const createdOrder = await order.save();
     res.status(201).json(createdOrder);
   }
 });
 
-export { addOrderItems };
+// @description Get order by id
+// @route POST /api/orders/:id
+// access Private
+
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+
+export { addOrderItems, getOrderById };
